@@ -2,9 +2,10 @@
   "name": "electron-serialport",
   "version": "1.0.2",
   "description": "A minimal Electron application with node serialport",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "repository": {
     "type": "git",
@@ -20,15 +21,41 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "31.0.2"
+    "electron": "31.0.2",
+    "electron-builder": "^22.14.13",
+    "electron-packager": "^12.2.0"
   },
   "dependencies": {
-    "serialport": "^10.3.0",
-    "tableify": "^1.1.1",
-    "electron-edge-js": "31.0.0"
+    "electron-edge-js": "31.0.0",
+    "tableify": "^1.1.1"
   },
   "engines": {
-    "node": "16.20.0",
+    "node": "16.16.0",
     "npm": "9.5.1"
+  },
+  "build": {
+    "asar": false,
+  "directories": {
+    "buildResources": "src/resources"
+  },
+  "files": [
+    "src/**/*",
+    "!node_modules/**/*",
+    "node_modules/electron-edge-js/**/*"
+  ],
+  "extraFiles": [
+    {
+      "from": "src/resources/",
+      "to": "resources/",
+      "filter": [
+        "**/*"
+      ]
+    }
+  ],
+  "win": {
+    "target": [
+      "nsis"
+    ]
   }
+}
 }

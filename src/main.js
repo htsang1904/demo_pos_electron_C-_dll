@@ -2,12 +2,9 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const url = require('url')
 require("module").globalPaths.push(process.cwd()+'/node_modules');
-
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
-
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
@@ -17,7 +14,10 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true, // to allow require
             contextIsolation: false, // allow use with Electron 12+
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+            devTools: {
+                autoReconnect: false
+            }
         }
     })
 
@@ -43,7 +43,14 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', () => {
+    try {
+        createWindow();
+    } catch (error) {
+        console.error('Error creating window:', error);
+        // Xử lý lỗi khi tạo cửa sổ, ví dụ thông báo cho người dùng, ghi log, ...
+    }
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
